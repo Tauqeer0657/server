@@ -5,6 +5,7 @@ const cors = require('cors');  // Import the cors middleware
 const connectDB = require('./config/db');
 const assignmentRoutes = require('./routes/assignmentRoutes');
 const registrationRoutes = require('./routes/registrationRoutes');
+const loginRoutes = require('./routes/loginRoutes');
 
 // Connect to the database
 connectDB();
@@ -21,6 +22,9 @@ app.use('/assignments', assignmentRoutes);
 
 // Assign the registration routes
 app.use('/registration', registrationRoutes);
+
+// Assign the login routes
+app.use('/login', loginRoutes);
 
 // Start the server
 app.listen(PORT, () => {

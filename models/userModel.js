@@ -1,7 +1,8 @@
-// models/registrationModel.js
+// models/userModel.js
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
-const registrationSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   employee_id : {
     type : String,
     unique : true,
@@ -46,10 +47,24 @@ const registrationSchema = new mongoose.Schema({
   confirm_password: {
     type : String,
     required : true
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
   }
 });
 
-const Registration = mongoose.model('Registration', registrationSchema);
+userSchema.pre("save", async function(next) {
+  if(this.isModified("password")){
+      this.password = await bcrypt.hash(this.password, 10);
+      this.confirm_password = await bcrypt.hash(this.confirm_password, 10);
+  }
+  next();
+})
+
+
+const User = mongoose.model('Registration', userSchema);
 
 // const counterSchema = new mongoose.Schema({
 //     id : {
@@ -62,5 +77,5 @@ const Registration = mongoose.model('Registration', registrationSchema);
 
 // const Counter = mongoose.model('Counter', counterSchema);
 
-module.exports = Registration;
+module.exports = User;
 // module.exports = Counter;

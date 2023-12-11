@@ -1,6 +1,6 @@
 // routes/registrationRoutes.js
 const express = require('express');
-const Registration = require('../models/registrationModel');
+const User = require('../models/userModel');
 // const Counter = require('../models/registrationModel');
 
 const router = express.Router();
@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
         const confirm_password = req.body.confirm_password;
 
       if(password === confirm_password){
-        const registration = new Registration(req.body);
+        const registration = new User(req.body);
         await registration.save();
         res.status(201).send("Successfully Registered");
       }else{
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
 // Route to get all registration
 router.get('/', async (req, res) => {
   try {
-    const registration = await Registration.find();
+    const registration = await User.find();
     res.send(registration);
   } catch (error) {
     res.status(500).send(error);
