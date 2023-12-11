@@ -17,6 +17,8 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
+app.set("view engine","hbs");
+
 // Assign the assignment routes
 app.use('/assignments', assignmentRoutes);
 
