@@ -24,7 +24,7 @@ router.get('/', auth , async (req,res) => {
 
 // logout from all device 
 
-    router.get('/logout', auth , async (req,res) => {
+    router.get('/all', auth , async (req,res) => {
         try {
             console.log(req.user);
     
