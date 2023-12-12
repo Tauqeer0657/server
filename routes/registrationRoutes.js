@@ -29,6 +29,11 @@ router.post('/', async (req, res) => {
 
       if(password === confirm_password){
         const registration = new User(req.body);
+
+      // Calling for generate token 
+
+      const token = await registration.generateAuthToken();
+      console.log("the token part is " + token);
         await registration.save();
         res.status(201).send("Successfully Registered");
       }else{
@@ -41,7 +46,7 @@ router.post('/', async (req, res) => {
   )
 
 
-// Route to get all registration
+// Route to get all registrations
 router.get('/', async (req, res) => {
   try {
     const registration = await User.find();

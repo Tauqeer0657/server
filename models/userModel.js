@@ -1,6 +1,7 @@
 // models/userModel.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
   employee_id : {
@@ -52,8 +53,30 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['user', 'admin'],
     default: 'user'
-  }
+  },
+  tokens:[{
+      token:{
+          type:String,
+          required:true
+      }
+  }]
 });
+
+// generating token 
+
+userSchema.methods.generateAuthToken = async function(){
+  try{
+      const token = jwt.sign({_id:this._id.toString()}, process.env.SECRET_KEY);
+      this.tokens = this.tokens.concat({token:token})
+      await this.save();
+      return token;
+  }catch(error){
+      res.send("the error part" + error);
+      console.log("the error part" + error);
+  }
+}
+
+// hashing the password 
 
 userSchema.pre("save", async function(next) {
   if(this.isModified("password")){
